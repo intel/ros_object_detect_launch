@@ -1,0 +1,40 @@
+<!--
+Copyright (c) 2017 Intel Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<launch>
+  <!--
+            below arguments together define the interface between object_detect_launch project and specific detect
+            implementation project in the launch file way
+            detailed protocals are as following:
+            1. name, pkg_name, manager, input and output are must to have.
+            2. param_file is optional, the included launch file should obtain all other parameters from this YAML file
+  -->
+  <arg name="name"        default="detect_nodelet"      doc="name for the included nodelet" />
+  <arg name="pkg_name"    default="opencl_caffe"        doc="package name of the detect implementation" />
+  <arg name="manager"                                   doc="name of the nodelet manager for detect nodelet" />
+  <arg name="input"                                     doc="topic name for detect nodelet to subscribe as input" />
+  <arg name="output"                                    doc="topic name of the detect result" />
+  <arg name="param_file"  default="$(find opencl_caffe_launch)/launch/includes/default.yaml"
+                                                                            doc="full path name to param yaml file" />
+
+  <include file="$(find opencl_caffe_launch)/launch/includes/nodelet.launch"
+                    if="$(eval pkg_name == 'opencl_caffe' or pkg_name == 'opencl_caffe_launch')" >
+      <arg name="name"          value="$(arg name)" />
+      <arg name="manager"       value="$(arg manager)" />
+      <arg name="input_topic"   value="$(arg input)" />
+      <arg name="output_topic"  value="$(arg output)" />
+      <arg name="param_file"    value="$(arg param_file)"/>
+  </include>
+</launch>
