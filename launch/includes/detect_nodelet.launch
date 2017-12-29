@@ -19,17 +19,11 @@ limitations under the License.
   <arg name="manager"                                   doc="name of the nodelet manager for detect nodelet" />
   <arg name="input"                                     doc="topic name for detect nodelet to subscribe as input" />
   <arg name="output"                                    doc="topic name of the detect result" />
-
-  <!-- parameters for clCaffe wrapper -->
-  <arg name="clcaffe_param_file" default="$(find opencl_caffe_launch)/launch/includes/default.yaml"
-                                               doc="full path name to param yaml file" />
-
-  <!-- parameters for Intel Movidius NCS wrapper -->
   <arg name="device_index"    default="0" />
   <arg name="log_level"       default="0" />
   <arg name="cnn_type"        default="mobilenetssd" />
   <arg name="top_n"           default="3" />
-  <arg name="ncs_param_file"  default="$(find movidius_ncs_launch)/config/mobilenetssd.yaml"
+  <arg name="param_file"  default="$(find movidius_ncs_launch)/config/mobilenetssd.yaml"
                                                   doc="full path name to param yaml file" />
 
 
@@ -39,14 +33,14 @@ limitations under the License.
       <arg name="manager"       value="$(arg manager)" />
       <arg name="input_topic"   value="$(arg input)" />
       <arg name="output_topic"  value="$(arg output)" />
-      <arg name="param_file"    value="$(arg clcaffe_param_file)"/>
+      <arg name="param_file"    value="$(arg param_file)"/>
   </include>
   <include file="$(find movidius_ncs_launch)/launch/includes/ncs_stream.launch"
                     if="$(eval pkg_name == 'movidius_ncs' or pkg_name == 'movidius_ncs_launch')" >
       <arg name="manager"       value="$(arg manager)" />
       <arg name="input_topic"   value="$(arg input)" />
       <arg name="output_topic"  value="$(arg output)" />
-      <arg name="param_file"    value="$(arg ncs_param_file)"/>
+      <arg name="param_file"    value="$(arg param_file)"/>
       <arg name="device_index"  value="$(arg device_index)"/>
       <arg name="log_level"     value="$(arg log_level)"/>
       <arg name="cnn_type"      value="$(arg cnn_type)"/>
